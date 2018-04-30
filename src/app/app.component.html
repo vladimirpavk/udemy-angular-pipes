@@ -1,16 +1,24 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
-      <ul class="list-group">
+      <input type="text" [(ngModel)]="filteredValue" #filter>
+      <hr>
+      <p>Name form server {{ nameFromServer | async }}</p>
+      <p>Name form server {{ nameFromServerPromise | async }}</p>
+      <ul class="list-group">        
+        <p>{{ filteredValue }}</p>
+        {{ filter.value }}
+        <hr>
         <li
           class="list-group-item"
-          *ngFor="let server of servers"
+          *ngFor="let server of servers | sort:'name'"
           [ngClass]="getStatusClasses(server)">
           <span
             class="badge">
             {{ server.status }}
           </span>
-          <strong>{{ server.name }}</strong> | {{ server.instanceType }} | {{ server.started }}
+          <!-- <strong>{{ server.name | uppercase | shorten:{sliceCount:5, sliceCount2 : 10 } }}</strong> | {{ server.instanceType }} | {{ server.started | date:'fullDate'}} -->
+          <strong>{{ server.name | uppercase | reverse }}</strong> | {{ server.instanceType }} | {{ server.started | date:'fullDate'}}
         </li>
       </ul>
     </div>

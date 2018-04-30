@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   servers = [
     {
       instanceType: 'medium',
@@ -32,6 +33,28 @@ export class AppComponent {
       started: new Date(15, 1, 2017)
     }
   ];
+
+  ngOnInit(){
+    setTimeout(()=>{
+      this.nameServer.next('ServerVladimir');
+    },5000);
+
+    this.nameFromServerPromise=new Promise((resolve, reject)=>{
+      setTimeout(()=>{
+        resolve('Vladimir from Promise');
+      }, 8000);
+    });
+
+    
+
+  }
+  
+  private nameServer : Subject<string> = new Subject<string>();
+  private nameServerPromise : Promise<string>;
+
+  private nameFromServer = this.nameServer;
+  private nameFromServerPromise = this.nameServerPromise;
+
   getStatusClasses(server: {instanceType: string, name: string, status: string, started: Date}) {
     return {
       'list-group-item-success': server.status === 'stable',
